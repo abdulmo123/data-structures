@@ -1,6 +1,15 @@
+# ignore pre-processed files
 *.i
+
+# ignore object code files
 *.o
+
+# ignore assembly code files
 *.s
+
+# ignore default generated executable
 a.out
 dynamic_array
+
+# ignore vs code files
 .vscode/*
