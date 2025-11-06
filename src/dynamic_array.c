@@ -63,7 +63,7 @@ void push(DynamicArray *arr, int value) {
 			return;
 		}
 		else {
-			printf("Success!. %p bytes allocated at address %p!\n", arr->capacity * sizeof(int), newData);
+			printf("Success!. %lu bytes allocated at address %p!\n", arr->capacity * sizeof(int), newData);
 			arr->data = newData;
 		}
 		printf("New capacity yay! :) %d\n", arr->capacity);
