@@ -23,6 +23,20 @@ int main() {
 	// call add method :)
 	push(&arr, 4);
 	push(&arr, 1);
+	push(&arr, 3);
+	push(&arr, 5);
+	push(&arr, 2);
+	push(&arr, 8);
+	push(&arr, 6);
+	push(&arr, 0);
+	push(&arr, 9);
+	push(&arr, 7);
+	push(&arr, 2);
+	push(&arr, 8);
+	push(&arr, 6);
+	push(&arr, 0);
+	push(&arr, 9);
+	push(&arr, 7);
 	printf("Hello World!\n");
 	return 0;
 }
@@ -40,15 +54,19 @@ void init(DynamicArray *arr) {
 }
 
 void push(DynamicArray *arr, int value) {
-//	arr->size = 4;
-	// todo: check if size = capacity, if so -- reallocate memory to expand array
-	// todo: will probably need to copy over values too?
 	if (arr->size == arr->capacity) {
 		int newCapacity = arr->capacity * 2;
-		// todo: add logic for array realloc here ...
-//		arr->capacity = newCapacity;
-//		arr->data = realloc(newCapacity * sizeof(int));
-//		printf("New capacity bro! %d\n", arr->capacity);
+		arr->capacity = newCapacity;
+		int *newData = realloc(arr->data, newCapacity * sizeof(int));
+		if (newData == NULL) {
+			printf("Failed. Unable to resize memory");
+			return;
+		}
+		else {
+			printf("Success!. %p bytes allocated at address %p!\n", arr->capacity * sizeof(int), newData);
+			arr->data = newData;
+		}
+		printf("New capacity yay! :) %d\n", arr->capacity);
 	}
 
 	arr->data[arr->size] = value;
@@ -60,4 +78,5 @@ void push(DynamicArray *arr, int value) {
 	for (int i = 0; i < arr-> capacity; i++) {
 		printf("%d ", arr->data[i]);
 	}
+	printf("\n");
 }
