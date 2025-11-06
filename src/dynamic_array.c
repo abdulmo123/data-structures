@@ -51,12 +51,7 @@ void push(DynamicArray *arr, int value) {
 //		printf("New capacity bro! %d\n", arr->capacity);
 	}
 
-	int i = 0;
-	while (i < arr->size) {
-		i++;
-	}
-
-	arr->data[i] = value;
+	arr->data[arr->size] = value;
 	arr->size++;
 
 	printf("Aftering adding ...\n");
