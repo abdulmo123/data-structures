@@ -14,6 +14,8 @@ void push(DynamicArray *arr, int capacity);
 void pop (DynamicArray *arr);
 int search(DynamicArray *arr, int value);
 bool isEmpty(DynamicArray *arr);
+void insert(DynamicArray *arr, int index, int value);
+void removeItem(DynamicArray *arr, int index);
 
 int main() {
 	DynamicArray arr;
@@ -44,6 +46,13 @@ int main() {
 	search(&arr, 9);
 	search(&arr, 13);
 
+	// call INSERT method
+	insert(&arr, 3, 5);
+	insert(&arr, 0, -1);
+	// call REMOVE method
+	removeItem(&arr, 2);
+	removeItem(&arr, 0);
+	removeItem(&arr, 4);
 	return 0;
 }
 
@@ -81,7 +90,7 @@ void push(DynamicArray *arr, int value) {
 	printf("After PUSHING ...\n");
 	printf("Size = %d\n", arr->size);
 	printf("Capacity = %d\n", arr->capacity);
-	for (int i = 0; i < arr-> capacity; i++) {
+	for (int i = 0; i < arr->capacity; i++) {
 		printf("%d ", arr->data[i]);
 	}
 	printf("\n");
@@ -92,12 +101,14 @@ void pop(DynamicArray *arr) {
 	// do i need to actually 'remove' the values? or just set to 0 and reduce size
 	if (arr->size * 2 <= arr->capacity) {
 		// todo: realloc smaller arr
+		int newCapacity = arr->capacity / 2;
 		int *newData = realloc(arr->data, (arr->capacity / 2) * sizeof(int));
 		if (newData == NULL) {
 			printf("NOOOO!!");
 			return;
 		} else {
 			arr->data = newData;
+			arr->capacity = newCapacity;
 			printf("YAAAAAAAAAY!!!");
 		}
 	}
@@ -133,4 +144,58 @@ int search(DynamicArray *arr, int value) {
 bool isEmpty(DynamicArray *arr) {
 	printf("Is array empty? %d\n", arr->size == 0);
 	return arr->size == 0;
+}
+
+void insert(DynamicArray *arr, int index, int value) {
+	if (arr->size == arr->capacity) {
+		// realloc size to larger capacity
+		int *newData = realloc(arr->data, (arr->capacity * 2) * sizeof(int));
+		arr->capacity = arr->capacity * 2;
+		arr->data = newData;
+	}
+
+	// shift items to the right up until we reach index
+	for (int i = arr->capacity - 1; i > index; i--) {
+		arr->data[i] = arr->data[i-1];
+	}
+
+	arr->data[index] = value;
+	arr->size++;
+
+	printf("After INSERTING value: {%d} at index: {%d}...\n", value, index);
+	printf("Size = %d\n", arr->size);
+	printf("Capacity = %d\n", arr->capacity);
+	for (int i = 0; i < arr->capacity; i++) {
+		printf("%d ", arr->data[i]);
+	}
+	printf("\n");
+}
+
+void removeItem(DynamicArray *arr, int index) {
+	if (arr->size * 2 <= arr->capacity) {
+		int newCapacity = arr->capacity / 2;
+		int *newData = realloc(arr->data, newCapacity * sizeof(int));
+		if (newData == NULL) {
+			return;
+		} else {
+			arr->data = newData;
+			arr->capacity = newCapacity;
+		}
+	}
+
+	arr->data[index] = 0;
+	for (int i = index; i < arr->size - 1; i++) {
+		int temp = arr->data[i];
+		arr->data[i] = arr->data[i+1];
+		arr->data[i+1] = temp;
+	}
+	arr->size--;
+
+	printf("After REMOVING item at index: {%d}\n", index);
+	printf("Size = %d\n", arr->size);
+	printf("Capacity = %d\n", arr->capacity);
+	for (int i = 0; i < arr->capacity; i++) {
+		printf("%d ", arr->data[i]);
+	}
+	printf("\n");
 }
